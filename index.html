@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perpustakaan Sekolah</title>
+
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background: #f4f6f8;
+      color: #1ad5e2;
+      line-height: 1.6;
+    }
+
+    header {
+      background: #f50193;
+      color: #fff;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    nav {
+      background: #8aa6c2;
+      padding: 15px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      color: #a7a7a7;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+
+    .intro-text {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .search-box {
+      margin-bottom: 20px;
+      display: flex;
+    }
+
+    .search-box input {
+      flex: 1;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .books {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .book {
+      background: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+
+    .book:hover {
+      transform: translateY(-5px);
+    }
+
+    .book h3 {
+      margin-top: 0;
+      color: #970081;
+    }
+
+    .profile-card {
+      background: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      text-align: center;
+      margin-top: 40px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .profile-img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 15px;
+      border: 4px solid #b90170;
+    }
+
+    footer {
+      background: #79006b;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 50px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header id="Beranda">
+    <h1>📚 Perpustakaan Sekolah</h1>
+    <p>Perpustakaan Sekolah Thawalib Putri</p>
+  </header>
+        
+  <nav>
+    <a href="#Beranda">Beranda</a>
+    <a href="#Kategori">Kategori</a>
+    <a href="#Pustakawan">Pustakawan</a>
+  </nav>
+
+  <main class="container">
+    <section class="intro-text">
+      <p>Perpustakaan sekolah merupakan sarana pendukung pembelajaran yang menyediakan berbagai sumber informasi bagi siswa dan guru. keberadaannya berperan penting dalam meningkatkan minat baca, menambah wawasan dan mendukung proses belajar di sekolah.</p>
+    </section>
+
+    <section id="Kategori">
+      <h2>Koleksi Buku</h2>
+      <div class="search-box">
+        <input type="text" id="search" placeholder="Cari judul buku atau penulis..." />
+      </div>
+      <div class="books" id="bookList"></div>
+    </section>
+
+    <section id="Pustakawan" class="profile-card">
+      <h2>Profil Pustakawan</h2>
+      <img src="gambar/gambar profil.jpg" alt="Foto Profil" class="profile-img" onerror="this.src='https://via.placeholder.com/150'">
+      <h3>Vagesa Mayang Sari</h3>
+      <p>Saya merupakan mahasiswa S1 Program Studi Ilmu Perpustakaan dan Informasi Islam, Fakultas Adab dan Humaniora, Universitas Islam Negeri Imam Bonjol Padang.</p>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2025 Perpustakaan Sekolah - Vagesa Mayang Sari
+  </footer>
+
+  <script>
+    const books = [
+      { title: "Bahasa Indonesia untuk MA", author: "Suherli,dkk", year: 2018 },
+      { title: "Ilmu Hadis", author: "M. Syuhudi Ismail", year: 2015 },
+      { title: "Durus al Lughah al'Arabiyyah", author: "Dr.V. Abdurahim", year: 2014 },
+      { title: "Ta'lim Muta'allim", author: "Az-Zurnuji", year: 2012 },
+      { title: "Kisah Teladan Penunjang", author: "Ustadz Ahmad Al-Hasyini", year: 2018 }
+    ];
+
+    const bookList = document.getElementById("bookList");
+    const searchInput = document.getElementById("search");
+
+    function displayBooks(data) {
+      bookList.innerHTML = "";
+      if (data.length === 0) {
+        bookList.innerHTML = "<p>Buku tidak ditemukan.</p>";
+        return;
+      }
+      data.forEach(book => {
+        const div = document.createElement("div");
+        div.className = "book";
+        div.innerHTML = `
+          <h3>${book.title}</h3>
+          <p><strong>Penulis:</strong> ${book.author}</p>
+          <p><strong>Tahun:</strong> ${book.year}</p>
+        `;
+        bookList.appendChild(div);
+      });
+    }
+
+    searchInput.addEventListener("input", () => {
+      const keyword = searchInput.value.toLowerCase();
+      const filtered = books.filter(book =>
+        book.title.toLowerCase().includes(keyword) ||
+        book.author.toLowerCase().includes(keyword)
+      );
+      displayBooks(filtered);
+    });
+
+    // Inisialisasi tampilan pertama kali
+    displayBooks(books);
+  </script>
+
+</body>
+</html>
